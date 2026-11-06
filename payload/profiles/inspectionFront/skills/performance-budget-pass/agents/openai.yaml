@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance Budget Pass"
+  short_description: "Review render, bundle, and data performance risks"
+  default_prompt: "Use this skill when a change may affect frontend performance, render frequency, tables, lists, assets, or bundle size."

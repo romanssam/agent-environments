@@ -1,0 +1,7 @@
+interface:
+  display_name: "Papermorph"
+  short_description: "Учебные книги на русском с сохранением в SQLite"
+  default_prompt: "Используй $papermorph для создания учебной книги на русском и сохранения результата в локальную библиотеку."
+
+policy:
+  allow_implicit_invocation: true

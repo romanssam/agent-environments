@@ -1,0 +1,4 @@
+interface:
+  display_name: "RTK Query API Change"
+  short_description: "Add or modify typed RTK Query API flows"
+  default_prompt: "Use this skill when adding or changing backend API requests, mutations, cache tags, or auth-sensitive data flows."

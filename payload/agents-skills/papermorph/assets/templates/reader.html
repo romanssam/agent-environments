@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{TITLE}}</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f0eafa'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='48' fill='%237046c3'%3E∞%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="reader/reader.css">
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Перейти к примерам</a>
+  <nav class="reader-nav" aria-label="Навигация по книге">
+    <a class="reader-brand" href="index.html"><span>∞</span> Papermorph</a>
+    <div class="nav-links"><a href="#reference">Объяснения</a><a href="#sources">Источники</a><a href="ch01/">С озвучкой ↗</a></div>
+  </nav>
+  <main>
+    <header class="reader-header">
+      <p class="eyebrow">{{EYEBROW}}</p>
+      <h1>{{TITLE}}</h1>
+      <p class="reader-lead">{{LEAD}}</p>
+      <div class="reader-meta">{{META}}</div>
+    </header>
+    <section class="explorer" id="explorer" aria-labelledby="explorer-heading">
+      <p class="eyebrow">{{EXPLORER_KICKER}}</p>
+      <h2 id="explorer-heading">{{EXPLORER_TITLE}}</h2>
+      <p class="section-intro">{{EXPLORER_INTRO}}</p>
+      <noscript><p class="no-script">Для пошаговых примеров включите JavaScript. Объяснения и задания ниже доступны без него.</p></noscript>
+      <div class="example-tabs" id="example-tabs" role="tablist" aria-label="Варианты примеров"></div>
+      <div id="example-panel" role="tabpanel" tabindex="0">
+        <div class="example-context"><h3 id="example-title"></h3><p id="example-intro"></p></div>
+        <div class="walkthrough">
+          <section class="code-panel" aria-labelledby="code-heading">
+            <div class="panel-heading"><span id="code-heading"><span class="dot"></span>{{CODE_LANGUAGE}}</span><span class="panel-caption">{{CODE_CAPTION}}</span></div>
+            <div class="code-lines" id="example-code" aria-label="Код примера с номерами строк"></div>
+          </section>
+          <div class="state-board" id="state-board" aria-label="Состояние после действия"></div>
+        </div>
+        <div class="explorer-controls">
+          <button class="control" type="button" id="step-prev">← Назад</button>
+          <button class="control primary" type="button" id="step-next">Следующий шаг →</button>
+          <button class="control" type="button" id="step-reset">Сначала</button>
+          <span class="step-counter" id="step-counter"></span>
+          <button class="control play" type="button" id="step-play" aria-pressed="false">▶ Автопроход</button>
+        </div>
+        <input class="step-range" id="step-range" type="range" min="0" value="0" aria-label="Шаг выполнения">
+        <div class="step-detail" id="step-detail" aria-live="polite" aria-atomic="true">
+          <h4><span class="phase" id="step-phase"></span><span id="step-title"></span></h4>
+          <p id="step-why"></p>
+        </div>
+        <div class="takeaway" id="example-takeaway"><strong></strong><p></p></div>
+      </div>
+      <p class="model-note">{{MODEL_NOTE}}</p>
+    </section>
+    {{QUICK_MAP}}
+    <section class="reference-section" id="reference" aria-labelledby="reference-heading">
+      <p class="eyebrow">{{REFERENCE_KICKER}}</p>
+      <h2 id="reference-heading">{{REFERENCE_TITLE}}</h2>
+      <p class="reference-intro">{{REFERENCE_INTRO}}</p>
+      <article class="reader-article">{{ARTICLE}}</article>
+    </section>
+    <footer class="reader-footer"><p>{{FOOTER}}</p><a href="#explorer">Вернуться к примерам ↑</a></footer>
+  </main>
+  <script src="reader-examples.js"></script>
+  <script>{{CONFIG}}</script>
+  <script src="reader/reader.js"></script>
+</body>
+</html>

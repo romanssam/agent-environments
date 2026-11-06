@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Regression Pass"
+  short_description: "Inspect changed UI states and responsive behavior"
+  default_prompt: "Use this skill to validate layout, state handling, and visual consistency for changed screens or components."

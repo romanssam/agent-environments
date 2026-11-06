@@ -1,0 +1,7 @@
+interface:
+  display_name: "Engineering Control"
+  short_description: "Scoped engineering workflow for Codex"
+  default_prompt: "Use $engineering-control to analyze the engineering task, propose a minimal path, wait for confirmation when needed, then self-review and verify changes."
+
+policy:
+  allow_implicit_invocation: true

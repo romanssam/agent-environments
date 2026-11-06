@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>НАЗВАНИЕ ГЛАВЫ</title>
+<link rel="stylesheet" href="../lib/engine.css">
+<link rel="stylesheet" href="../lib/light.css">
+<link rel="expect" href="#bar" blocking="render"><!-- hold the first frame until the player exists, so the page transition can run -->
+</head>
+<body>
+<script src="../lib/engine.js"></script>
+<script src="audio/ru/timings.js"></script>
+<script>
+'use strict';
+// A starting skeleton, not a design. Replace every beat; keep the shape: intro, lesson beats with
+// quick checks between them, a summary, full-screen practice, finish. Beat ids match narration.ru.json.
+const CHAPTER = { number: 1, title: 'НАЗВАНИЕ ГЛАВЫ', minutes: 8, language: 'ru' };   // match the audio folder; set next once the next chapter exists
+
+/* ---------- chapter drawing helpers ---------- */
+const mline = (p, parts, x, y, t0, fill = COL.chalk, size = 48, anchor = 'middle') => { const e = M(p, [].concat(parts), { x, y, size, fill, anchor, o: 0 }); show(e, t0); return e; };
+const text = (p, str, x, y, t0, { size = 30, fill = COL.chalk, anchor = 'start', weight = 500 } = {}) => { const e = T(p, str, { x, y, size, fill, anchor, weight, o: 0 }); show(e, t0); return e; };
+
+/* ---------- beats: [id, title, run(m, D), { ask }?] ---------- */
+const BEATS = [
+  ['intro', 'ТЕМА', (m, D) => {
+    const g = G(scene, { o: 0, y: 24 });
+    T(g, 'Раздел 1, глава 1', { x: 800, y: 330, size: 28, fill: COL.dim, anchor: 'middle' });
+    T(g, 'НАЗВАНИЕ ГЛАВЫ', { x: 800, y: 430, size: 88, weight: 600, anchor: 'middle' });
+    tw(g, { o: 1, y: 0 }, .2, 1.1, out);
+    const r = text(scene, 'одна строка о цели этой главы', 800, 600, m('sub'), { size: 34, fill: COL.dim, anchor: 'middle' });
+    tw(g, { o: 0, y: -24 }, D - .9, .8); hide(r, D - .9, .8);
+  }],
+  ['idea', 'ПЕРВАЯ ИДЕЯ', (m) => {
+    const p = panel(0);                                  // fades the last picture; put the topic on screen at once
+    mline(p, '3 + 4 = 7', 800, 260, .2, COL.chalk, 64);
+    text(p, 'подпись появляется вместе с нужным словом', 800, 380, m('note'), { size: 30, fill: COL.task, anchor: 'middle', weight: 600 });
+  }],
+  ['q1', 'Короткая проверка', () => { panel(0); }, { ask: done => quiz(BAND, [{
+    id: 'c-first', prompt: ['Вопрос о том, что только что было показано.'],
+    build: blanks([{ parts: ['3 + 4 = ', { box: '7' }], why: 'Почему этот ответ верный.', hint: 'Подсказка о вероятной ошибке.' }]),
+  }], done) }],
+  ['wrap', 'Итоги', (m) => {
+    const p = panel(0);
+    [['Первый вывод.', 'w1'], ['Второй вывод.', 'w2']].forEach(([str, mark], i) => {
+      const g = G(p, { x: -16, y: 300 + i * 140, o: 0 });
+      mk('circle', { cx: 200, cy: -12, r: 26, fill: COL.task }, g);
+      T(g, String(i + 1), { x: 200, y: -1, size: 30, fill: COL.board, weight: 700, anchor: 'middle' });
+      T(g, str, { x: 260, size: 34, weight: 600 });
+      tw(g, { o: 1, x: 0 }, m(mark), .6);
+    });
+  }],
+  ['final1', 'Практика по главе', () => { panel(0); }, { ask: done => quiz(SCREEN, [{
+    id: 'p-one', prompt: ['Задание по материалу всей главы.'],
+    build: choice([['верный ответ'], ['правдоподобный неверный ответ']], 0, 'Почему этот ответ верный.', [null, 'Что было понято неправильно.']),
+  }], done, 'Практика по главе   1 из 1') }],
+  ['finish', 'Завершено', () => { panel(0); }, { ask: finishCard }],
+].map(([id, title, run, extra]) => ({ id, title, run, ...extra }));
+
+/* ---------- practice data (constants used inside BEATS must be defined above it) ---------- */
+boot();
+</script>
+</body>
+</html>

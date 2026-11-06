@@ -1,0 +1,16 @@
+[mcp_servers.linear]
+url = "https://mcp.linear.app/mcp"
+enabled = false
+
+[mcp_servers.notion]
+url = "https://mcp.notion.com/mcp"
+enabled = false
+
+[mcp_servers.wellsoft]
+url = "REPLACE_WITH_USER_PROVIDED_WELLSOFT_MCP_URL"
+enabled = false
+
+[mcp_servers.project_handbook]
+url = "REPLACE_WITH_USER_PROVIDED_HANDBOOK_MCP_URL"
+bearer_token_env_var = "HANDBOOK_AGENT_TOKEN"
+enabled = false

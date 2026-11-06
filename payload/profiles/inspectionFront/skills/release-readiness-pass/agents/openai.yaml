@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Readiness Pass"
+  short_description: "Prepare a frontend change for safe release"
+  default_prompt: "Use this skill before final delivery or release to verify checks, risks, rollback notes, and the project context log."

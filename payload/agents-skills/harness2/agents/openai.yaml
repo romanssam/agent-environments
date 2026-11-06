@@ -1,0 +1,5 @@
+interface:
+  display_name: "Harness2"
+  short_description: "Probe task approaches and retain supported lessons"
+policy:
+  allow_implicit_invocation: true

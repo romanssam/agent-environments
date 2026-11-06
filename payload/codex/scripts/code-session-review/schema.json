@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["status", "summary", "checked_files", "findings", "limitations", "criteria"],
+    "properties": {
+        "status": { "type": "string", "enum": ["pass", "changes_requested", "incomplete"] },
+        "summary": { "type": "string" },
+        "checked_files": { "type": "array", "items": { "type": "string" } },
+        "limitations": { "type": "array", "items": { "type": "string" } },
+        "criteria": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["id", "status", "evidence"],
+                "properties": {
+                    "id": { "type": "string" },
+                    "status": { "type": "string", "enum": ["fulfilled", "partial", "missing", "unverified"] },
+                    "evidence": { "type": "string" }
+                }
+            }
+        },
+        "findings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["priority", "category", "file", "line", "problem", "fix"],
+                "properties": {
+                    "priority": { "type": "string", "enum": ["P1", "P2"] },
+                    "category": {
+                        "type": "string",
+                        "enum": ["correctness", "security", "simplicity", "duplication", "readability"]
+                    },
+                    "file": { "type": "string" },
+                    "line": { "type": "integer", "minimum": 1 },
+                    "problem": { "type": "string" },
+                    "fix": { "type": "string" }
+                }
+            }
+        }
+    }
+}

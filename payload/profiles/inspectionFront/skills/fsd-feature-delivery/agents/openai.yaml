@@ -1,0 +1,4 @@
+interface:
+  display_name: "FSD Feature Delivery"
+  short_description: "Deliver FSD React changes consistently"
+  default_prompt: "Use this skill to plan, implement, verify, and log a React/TypeScript FSD change in this project."
