@@ -37,7 +37,7 @@ async function executable(name) {
 async function version(name) {
   const command = await executable(name);
   if (!command) return { ok: false, detail: 'not found in trusted absolute PATH locations (repository paths and Windows aliases skipped)' };
-  const result = spawnSync(command, ['--version'], { encoding: 'utf8', timeout: 5000, maxBuffer: 64 * 1024, windowsHide: true, shell: false });
+  const result = spawnSync(command, [name === 'ffmpeg' || name === 'ffprobe' ? '-version' : '--version'], { encoding: 'utf8', timeout: 5000, maxBuffer: 64 * 1024, windowsHide: true, shell: false });
   const detail = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.trim().split(/\r?\n/)[0] ?? '';
   return { ok: result.status === 0, detail: detail || result.error?.message || `exit ${result.status}` };
 }
@@ -87,7 +87,7 @@ try {
   const home = path.resolve(options.home ?? os.homedir());
   const codex = options.home ? path.join(home, '.codex') : (process.env.CODEX_HOME || path.join(home, '.codex'));
   const manifest = JSON.parse(await readFile(path.join(repository, 'manifest.json'), 'utf8'));
-  if (!Array.isArray(manifest.skills)) throw new Error('manifest.json must list skills.');
+  if (!Array.isArray(manifest.skills) || !manifest.skills.length) throw new Error('manifest.json must list skills.');
   console.log(`Platform: ${process.platform}/${process.arch}\nNode: ${process.version}\nHome: ${home}\nCODEX_HOME: ${codex}`);
   const tools = ['git', 'codex', 'python3', 'uv', 'ffmpeg', 'ffprobe', 'gh', 'blender'];
   const versions = await Promise.all(tools.map(async name => ({ name, ...await version(name) })));

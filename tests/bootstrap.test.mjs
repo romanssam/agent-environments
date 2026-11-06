@@ -16,6 +16,7 @@ async function fixture(t) {
   const home = path.join(root, 'home with spaces');
   await mkdir(path.join(repo, 'scripts'), { recursive: true });
   await cp(source, path.join(repo, 'scripts/bootstrap.mjs'));
+  await cp(path.join(path.dirname(source), 'doctor.mjs'), path.join(repo, 'scripts/doctor.mjs'));
   await mkdir(home);
   const files = {
     'payload/agents-skills/example/SKILL.md': '# Example\n',
@@ -191,4 +192,33 @@ test('quotes POSIX hook paths containing shell syntax as literal arguments', { s
   const execution = spawnSync('/bin/sh', ['-c', hooks.hooks.Stop[0].hooks[0].command], { encoding: 'utf8', cwd: root });
   assert.equal(execution.status, 0, execution.stderr);
   await assert.rejects(lstat(path.join(root, 'injected')), { code: 'ENOENT' });
+});
+
+test('doctor reports missing requirements without writes and strict mode fails them', async t => {
+  const { repo, home } = await fixture(t);
+  for (const flags of [[], ['--strict']]) {
+    const result = spawnSync(process.execPath, [path.join(repo, 'scripts/doctor.mjs'), '--home', home, ...flags], {
+      encoding: 'utf8', env: { ...process.env, PATH: '' },
+    });
+    assert.equal(result.status, flags.length ? 1 : 0, result.stderr);
+    assert.match(result.stdout, /Skills: 0\/1 complete/);
+    assert.match(result.stdout, /Trust: manual check required/);
+    assert.match(result.stdout, /Accounts.*unverified/);
+    assert.deepEqual(await readdir(home), []);
+  }
+});
+
+test('doctor identifies installed payload and ignores repository executables on PATH', async t => {
+  const { repo, home, run } = await fixture(t);
+  assert.equal(run('--apply').status, 0);
+  const unsafeBin = path.join(repo, 'unsafe-bin');
+  await mkdir(unsafeBin);
+  await writeFile(path.join(unsafeBin, process.platform === 'win32' ? 'git.exe' : 'git'), 'do not execute repository tools', { mode: 0o755 });
+  const result = spawnSync(process.execPath, [path.join(repo, 'scripts/doctor.mjs'), '--home', home], {
+    encoding: 'utf8', env: { ...process.env, PATH: unsafeBin },
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Skills: 1\/1 complete; 2 files; 1 resource files/);
+  assert.match(result.stdout, /Review hook: configured/);
+  assert.match(result.stdout, /git: unavailable — not found in trusted absolute PATH/);
 });

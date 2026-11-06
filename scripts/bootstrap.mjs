@@ -116,7 +116,7 @@ async function prepare(options) {
       return;
     }
     if (previous && policy === 'replace' && !options.replace) throw new Error(`Conflict at ${target}. Review the file, then use --replace to back up and replace it.`);
-    operations.push({ root, target, content, previous, mode });
+    operations.push({ root, target, content, previous, mode: info && process.platform !== 'win32' ? info.mode & 0o777 : mode });
   }
   for (const skill of manifest.skills) {
     if (typeof skill.name !== 'string' || !skill.name || skill.name === '.' || skill.name === '..' || /[\\/]/.test(skill.name)) throw new Error('Invalid skill name in manifest.');
